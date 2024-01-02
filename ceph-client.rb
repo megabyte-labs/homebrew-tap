@@ -1,9 +1,9 @@
 class CephClient < Formula
   desc "Ceph client tools and libraries"
   homepage "https://ceph.com"
-  url "http://download.ceph.com/tarballs/ceph-18.2.1.tar.gz"
-  sha256 "8075b03477f42ad23b1efd0cc1a0aa3fa037611fc059a91f5194e4b51c9d764a"
-  # url "https://github.com/ceph/ceph.git", :using => :git, :tag => "v18.2.1", :revision => "7fe91d5d5842e04be3b4f514d6dd990c54b29c76"
+  # url "http://download.ceph.com/tarballs/ceph-18.2.1.tar.gz"
+  # sha256 "8075b03477f42ad23b1efd0cc1a0aa3fa037611fc059a91f5194e4b51c9d764a"
+  url "https://github.com/ceph/ceph.git", :using => :git, :tag => "v18.2.1", :revision => "7fe91d5d5842e04be3b4f514d6dd990c54b29c76"
   head "https://github.com/ceph/ceph.git", using: :git
   version "18.2.1"
   license "MIT"
@@ -28,10 +28,10 @@ class CephClient < Formula
     "python3.12"
   end
 
-  resource "PrettyTable" do
-    url "https://files.pythonhosted.org/packages/e1/c0/5e9c4d2a643a00a6f67578ef35485173de273a4567279e4f0c200c01386b/prettytable-3.9.0.tar.gz"
-    sha256 "f4ed94803c23073a90620b201965e5dc0bccf1760b7a7eaf3158cab8aaffdf34"
-  end
+  # resource "PrettyTable" do
+  #   url "https://files.pythonhosted.org/packages/e1/c0/5e9c4d2a643a00a6f67578ef35485173de273a4567279e4f0c200c01386b/prettytable-3.9.0.tar.gz"
+  #   sha256 "f4ed94803c23073a90620b201965e5dc0bccf1760b7a7eaf3158cab8aaffdf34"
+  # end
 
   patch :DATA
 
@@ -47,11 +47,11 @@ class CephClient < Formula
     ENV.prepend_create_path "PYTHONPATH", "#{Formula["sphinx-doc"].opt_libexec}/lib/python#{python_version}/site-packages"
     ENV.prepend_create_path "PYTHONPATH", "#{HOMEBREW_PREFIX}/lib/python#{python_version}/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{python_version}/site-packages"
-    resources.each do |resource|
-      resource.stage do
-        system python3, *Language::Python.setup_install_args(libexec/"vendor")
-      end
-    end
+    # resources.each do |resource|
+    #   resource.stage do
+    #     system python3, *Language::Python.setup_install_args(libexec/"vendor")
+    #   end
+    # end
 
     args = %W[
       -DDIAGNOSTICS_COLOR=always
