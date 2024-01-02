@@ -2,15 +2,14 @@ class CephClient < Formula
   desc "Ceph client tools and libraries"
   homepage "https://ceph.com"
   url "http://download.ceph.com/tarballs/ceph-18.2.1.tar.gz"
-  sha256 "362269c147913af874b2249a46846b0e6f82d2ceb50af46222b6ddec9991b29a"
+  sha256 "8075b03477f42ad23b1efd0cc1a0aa3fa037611fc059a91f5194e4b51c9d764a"
   revision 1
 
-  # depends_on "osxfuse"
   depends_on "boost@1.76"
   depends_on "openssl" => :build
   depends_on "cmake" => :build
   depends_on "ninja" => :build
-  # depends_on "cython" => :build
+  depends_on "cython" => :build
   depends_on "leveldb" => :build
   depends_on "nss"
   depends_on "pkg-config" => :build
