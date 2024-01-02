@@ -1,9 +1,10 @@
 class CephClient < Formula
   desc "Ceph client tools and libraries"
   homepage "https://ceph.com"
-  # url "http://download.ceph.com/tarballs/ceph-18.2.1.tar.gz"
-  # sha256 "8075b03477f42ad23b1efd0cc1a0aa3fa037611fc059a91f5194e4b51c9d764a"
-  url "https://github.com/ceph/ceph.git", :using => :git, :tag => "v18.2.1", :revision => "7fe91d5d5842e04be3b4f514d6dd990c54b29c76"
+  url "http://download.ceph.com/tarballs/ceph-18.2.1.tar.gz"
+  sha256 "8075b03477f42ad23b1efd0cc1a0aa3fa037611fc059a91f5194e4b51c9d764a"
+  # url "https://github.com/ceph/ceph.git", :using => :git, :tag => "v18.2.1", :revision => "7fe91d5d5842e04be3b4f514d6dd990c54b29c76"
+  head "https://github.com/ceph/ceph.git", using: :git
   version "18.2.1"
   license "MIT"
 
