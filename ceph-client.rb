@@ -3,6 +3,7 @@ class CephClient < Formula
   homepage "https://ceph.com"
   url "http://download.ceph.com/tarballs/ceph-18.2.1.tar.gz"
   sha256 "8075b03477f42ad23b1efd0cc1a0aa3fa037611fc059a91f5194e4b51c9d764a"
+  license "MIT"
   revision 1
 
   depends_on "boost@1.76"
@@ -41,7 +42,7 @@ class CephClient < Formula
     sha256 "c4d647b99872929fdb7bdcaa4fbe7f01413ed3d98077df798530e5b04f116c83"
   end
 
-  patch :DATA
+  # patch :DATA
 
   def install
     ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["nss"].opt_lib}/pkgconfig"
