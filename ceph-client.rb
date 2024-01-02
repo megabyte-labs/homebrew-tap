@@ -10,7 +10,7 @@ class CephClient < Formula
   depends_on "openssl" => :build
   depends_on "cmake" => :build
   depends_on "ninja" => :build
-  depends_on "cython" => :build
+  depends_on "cython"
   depends_on "leveldb" => :build
   depends_on "nss"
   depends_on "pkg-config" => :build
@@ -54,11 +54,11 @@ class CephClient < Formula
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{xy}/site-packages"
     resources.each do |resource|
       resource.stage do
-        system "python3", *Language::Python.setup_install_args(libexec/"vendor")
+        Formula["python@3.12"].opt_bin/"python3", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{xy}/site-packages"
-    system "python3", *Language::Python.setup_install_args(libexec)
+    Formula["python@3.12"].opt_bin/"python3", *Language::Python.setup_install_args(libexec)
 
     args = %W[
       -DDIAGNOSTICS_COLOR=always
