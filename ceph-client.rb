@@ -55,11 +55,11 @@ class CephClient < Formula
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{xy}/site-packages"
     resources.each do |resource|
       resource.stage do
-        system "python3", *Language::Python.setup_install_args(libexec/"vendor")
+        system "python3.12", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{xy}/site-packages"
-    system "python3", *Language::Python.setup_install_args(libexec)
+    system "python3.12", *Language::Python.setup_install_args(libexec)
 
     args = %W[
       -DDIAGNOSTICS_COLOR=always
