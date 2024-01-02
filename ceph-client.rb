@@ -14,7 +14,7 @@ class CephClient < Formula
   depends_on "leveldb" => :build
   depends_on "nss"
   depends_on "pkg-config" => :build
-  depends_on "python@3.12"
+  depends_on "python@3"
   depends_on "python-setuptools"
   depends_on "sphinx-doc" => :build
   depends_on "yasm"
@@ -43,23 +43,22 @@ class CephClient < Formula
     sha256 "c4d647b99872929fdb7bdcaa4fbe7f01413ed3d98077df798530e5b04f116c83"
   end
 
-  # patch :DATA
+  patch :DATA
 
   def install
     ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["nss"].opt_lib}/pkgconfig"
     ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["openssl"].opt_lib}/pkgconfig"
     ENV.prepend_path "PKG_CONFIG_PATH", "/usr/local/lib/pkgconfig"
-    xy = Language::Python.major_minor_version Formula["python@3.12"].opt_bin/"python3"
+    xy = Language::Python.major_minor_version "python3"
     ENV.prepend_create_path "PYTHONPATH", "#{Formula["cython"].opt_libexec}/lib/python3.12/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{xy}/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{xy}/site-packages"
     resources.each do |resource|
       resource.stage do
-        system "python3.12", *Language::Python.setup_install_args(libexec/"vendor")
+        system "python3", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{xy}/site-packages"
-    system "python3.12", *Language::Python.setup_install_args(libexec)
+    system "python3", *Language::Python.setup_install_args(libexec)
 
     args = %W[
       -DDIAGNOSTICS_COLOR=always
@@ -75,7 +74,7 @@ class CephClient < Formula
       -DWITH_MANPAGE=ON
       -DWITH_MGR=OFF
       -DWITH_MGR_DASHBOARD_FRONTEND=OFF
-      -DWITH_PYTHON3=3.12
+      -DWITH_PYTHON3=3.11
       -DWITH_RADOSGW=OFF
       -DWITH_RDMA=OFF
       -DWITH_SPDK=OFF
@@ -213,7 +212,7 @@ index 9d66ae979a6..eabf22bf174 100644
      set(ENV{CEPH_LIBDIR} \"${CMAKE_LIBRARY_OUTPUT_DIRECTORY}\")
 
 -    set(options --prefix=${CMAKE_INSTALL_PREFIX})
-+    set(options --prefix=${CMAKE_INSTALL_PREFIX} --install-lib=${CMAKE_INSTALL_PREFIX}/lib/python3.12/site-packages)
++    set(options --prefix=${CMAKE_INSTALL_PREFIX} --install-lib=${CMAKE_INSTALL_PREFIX}/lib/python3.11/site-packages)
      if(DEFINED ENV{DESTDIR})
        if(EXISTS /etc/debian_version)
          list(APPEND options --install-layout=deb)
