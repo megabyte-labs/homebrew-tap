@@ -208,7 +208,7 @@ index 9d66ae979a6..eabf22bf174 100644
      set(ENV{CEPH_LIBDIR} \"${CMAKE_LIBRARY_OUTPUT_DIRECTORY}\")
 
 -    set(options --prefix=${CMAKE_INSTALL_PREFIX})
-+    set(options --prefix=${CMAKE_INSTALL_PREFIX} --install-lib=${CMAKE_INSTALL_PREFIX}/lib/python3.12/site-packages)
++    set(options --prefix=${CMAKE_INSTALL_PREFIX} --install-lib=${CMAKE_INSTALL_PREFIX}/lib/python3.11/site-packages)
      if(DEFINED ENV{DESTDIR})
        if(EXISTS /etc/debian_version)
          list(APPEND options --install-layout=deb)
