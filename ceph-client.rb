@@ -15,6 +15,7 @@ class CephClient < Formula
   depends_on "nss"
   depends_on "pkg-config" => :build
   depends_on "python@3.12"
+  depends_on "python-setuptools"
   depends_on "sphinx-doc" => :build
   depends_on "yasm"
   def caveats
@@ -54,11 +55,11 @@ class CephClient < Formula
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{xy}/site-packages"
     resources.each do |resource|
       resource.stage do
-        Formula["python@3.12"].opt_bin/"python3", *Language::Python.setup_install_args(libexec/"vendor")
+        system "python3", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{xy}/site-packages"
-    Formula["python@3.12"].opt_bin/"python3", *Language::Python.setup_install_args(libexec)
+    system "python3", *Language::Python.setup_install_args(libexec)
 
     args = %W[
       -DDIAGNOSTICS_COLOR=always
