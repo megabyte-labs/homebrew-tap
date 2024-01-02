@@ -9,11 +9,15 @@ class CephClient < Formula
   depends_on "boost@1.76"
   depends_on "openssl" => :build
   depends_on "cmake" => :build
+  depends_on "cython"
   depends_on "ninja" => :build
   depends_on "leveldb" => :build
   depends_on "nss"
   depends_on "pkg-config" => :build
-  depends_on "python@3"
+  depends_on "python@3.12"
+  depends_on "python-setuptools"
+  depends_on "python-wcwidth"
+  depends_on "pyyaml"
   depends_on "sphinx-doc" => :build
   depends_on "yasm"
   def caveats
@@ -31,23 +35,17 @@ class CephClient < Formula
     sha256 "f4ed94803c23073a90620b201965e5dc0bccf1760b7a7eaf3158cab8aaffdf34"
   end
 
-  resource "PyYAML" do
-    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
-    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
-  end
-
-  resource "wcwidth" do
-    url "https://files.pythonhosted.org/packages/d7/12/63deef355537f290d5282a67bb7bdd165266e4eca93cd556707a325e5a24/wcwidth-0.2.12.tar.gz"
-    sha256 "f01c104efdf57971bcb756f054dd58ddec5204dd15fa31d6503ea57947d97c02"
-  end
-
   patch :DATA
 
   def install
     ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["nss"].opt_lib}/pkgconfig"
     ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["openssl"].opt_lib}/pkgconfig"
     ENV.prepend_path "PKG_CONFIG_PATH", "#{HOMEBREW_PREFIX}/lib/pkgconfig"
-    python_version = Language::Python.major_minor_version "python3"
+    python_version = Language::Python.major_minor_version "python3.12"
+    ENV.prepend_create_path "PYTHONPATH", "#{Formula["cython"].opt_libexec}/lib/python#{python_version}/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", "#{Formula["python-setuptools"].opt_lib}/python#{python_version}/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", "#{Formula["python-wcwidth"].opt_lib}/python#{python_version}/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", "#{Formula["pyyaml"].opt_lib}/python#{python_version}/site-packages"
     ENV.prepend_create_path "PYTHONPATH", "#{HOMEBREW_PREFIX}/lib/python#{python_version}/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{python_version}/site-packages"
     resources.each do |resource|
