@@ -7,7 +7,7 @@ class CephClient < Formula
   version "18.2.1"
   license "MIT"
 
-  depends_on "macfuse"
+  # depends_on "homebrew/cask/macfuse"
   depends_on "boost@1.76"
   depends_on "openssl" => :build
   depends_on "cmake" => :build
