@@ -1,11 +1,13 @@
 class CephClient < Formula
   desc "Ceph client tools and libraries"
   homepage "https://ceph.com"
-  url "http://download.ceph.com/tarballs/ceph-18.2.1.tar.gz"
-  sha256 "8075b03477f42ad23b1efd0cc1a0aa3fa037611fc059a91f5194e4b51c9d764a"
+  # url "http://download.ceph.com/tarballs/ceph-18.2.1.tar.gz"
+  # sha256 "8075b03477f42ad23b1efd0cc1a0aa3fa037611fc059a91f5194e4b51c9d764a"
+  url "https://github.com/ceph/ceph.git", :using => :git, :tag => "v18.2.1", :revision => "7fe91d5d5842e04be3b4f514d6dd990c54b29c76"
+  version "18.2.1"
   license "MIT"
-  revision 1
 
+  depends_on "macfuse"
   depends_on "boost@1.76"
   depends_on "openssl" => :build
   depends_on "cmake" => :build
@@ -20,17 +22,12 @@ class CephClient < Formula
   depends_on "pyyaml"
   depends_on "sphinx-doc" => :build
   depends_on "yasm"
-  def caveats
-    <<-EOS.undent
-      macFUSE must be installed prior to building this formula. macFUSE is also necessary
-      if you plan to use the FUSE support of CephFS. You can either install macFUSE from
-      https://osxfuse.github.io or use the following command:
 
-      brew install --cask macfuse
-    EOS
+  def python3
+    "python3.12"
   end
 
-  resource "prettytable" do
+  resource "PrettyTable" do
     url "https://files.pythonhosted.org/packages/e1/c0/5e9c4d2a643a00a6f67578ef35485173de273a4567279e4f0c200c01386b/prettytable-3.9.0.tar.gz"
     sha256 "f4ed94803c23073a90620b201965e5dc0bccf1760b7a7eaf3158cab8aaffdf34"
   end
@@ -41,16 +38,17 @@ class CephClient < Formula
     ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["nss"].opt_lib}/pkgconfig"
     ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["openssl"].opt_lib}/pkgconfig"
     ENV.prepend_path "PKG_CONFIG_PATH", "#{HOMEBREW_PREFIX}/lib/pkgconfig"
-    python_version = Language::Python.major_minor_version "python3.12"
+    python_version = Language::Python.major_minor_version python3
     ENV.prepend_create_path "PYTHONPATH", "#{Formula["cython"].opt_libexec}/lib/python#{python_version}/site-packages"
     ENV.prepend_create_path "PYTHONPATH", "#{Formula["python-setuptools"].opt_lib}/python#{python_version}/site-packages"
     ENV.prepend_create_path "PYTHONPATH", "#{Formula["python-wcwidth"].opt_lib}/python#{python_version}/site-packages"
     ENV.prepend_create_path "PYTHONPATH", "#{Formula["pyyaml"].opt_lib}/python#{python_version}/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", "#{Formula["sphinx-doc"].opt_libexec}/lib/python#{python_version}/site-packages"
     ENV.prepend_create_path "PYTHONPATH", "#{HOMEBREW_PREFIX}/lib/python#{python_version}/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{python_version}/site-packages"
     resources.each do |resource|
       resource.stage do
-        system "python3", *Language::Python.setup_install_args(libexec/"vendor")
+        system python3, *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
 
@@ -152,17 +150,6 @@ class CephClient < Formula
     ].each do |name|
       system "install_name_tool", "-add_rpath", "/opt/homebrew/lib", "#{libexec}/bin/#{name}"
     end
-  end
-
-  def caveats; <<~EOS
-    The fuse version shipped with macfuse is too old to access the
-    supplementary group IDs in cephfs.
-    Thus you need to add this to your ceph.conf to avoid errors:
-
-    [client]
-    fuse_set_user_groups = false
-
-    EOS
   end
 
   test do
