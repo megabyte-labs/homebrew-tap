@@ -1,4 +1,4 @@
-class Obs < Formula
+class ObsCli < Formula
   desc "CLI for Obsidian, hosted here due to binary name conflicts with OBS Studio"
   homepage "https://github.com/Yakitrak/obsidian-cli"
   version "0.1.6"
